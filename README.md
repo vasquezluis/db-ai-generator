@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Structura
 
-## Getting Started
+Structura es una herramienta innovadora diseñada para ayudar a los desarrolladores a generar esquemas de bases de datos de manera rápida y eficiente a partir de descripciones en lenguaje natural. Al aprovechar poderosos modelos de NLP, Structura traduce ideas de proyectos en esquemas detallados de MySQL, con representaciones visuales de las relaciones entre tablas.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Entrada en Lenguaje Natural**: Describe la estructura de tu proyecto en español.
+- **Soporte Bases de Datos MySQL**: Genera esquemas para MySQL (próximamente MongoDB).
+- **Representación Visual del Esquema**: Proporciona diagramas visuales para entender fácilmente las relaciones entre tablas.
+- **Opciones de Exportación**: Descarga scripts SQL para MySQL.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Primeros Pasos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisitos
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Node.js (v18 o superior)
+- Cuenta en Vercel (para despliegue)
 
-## Learn More
+### Instalación
 
-To learn more about Next.js, take a look at the following resources:
+1. Clona el repositorio:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone https://github.com/yourusername/structura.git
+   cd structura
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Instala las dependencias:
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Configura las variables de entorno:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   - Crea un archivo .env.local en el directorio raíz.
+   - Añade tu clave API de OpenAI en el archivo .env.local:
+
+   ```javascript
+   OPENAI_API_KEY = tu_openai_api_key
+   ```
+
+### Ejecuta el proyecto
+
+1. Inicia el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+2. Abre tu navegador y navega a http://localhost:3000 para ver la aplicación en acción.
+
+### Despliegue
+
+1. Instala la CLI de Vercel si aún no lo has hecho:
+
+   ```bash
+   npm install -g vercel
+   ```
+
+2. Despliega el proyecto:
+   ```bash
+   vercel
+   ```
+
+### Uso
+
+1. Describe tu proyecto en el área de texto proporcionada.
+2. Haz clic en "Generar" para crear esquemas de MySQL basados en tu descripción.
+3. Visualiza las representaciones visuales de los esquemas.
+4. Exporta los esquemas como scripts SQL para usarlos en tus proyectos.
+
+### Agradecimientos
+
+- Inspirado por la necesidad de simplificar la creación de esquemas de bases de datos para desarrolladores. (O al menos generar la idea inicial)
+- Creado para el hackatón de Midudev 🤝 Vercel #AD
+- Construido usando Next.js y el Vercel AI SDK.

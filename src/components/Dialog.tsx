@@ -14,13 +14,13 @@ import { Button } from '@/components/ui/button'
 import KeySVG from './icons/Key'
 import CopySVG from './icons/CopySVG'
 
-import { apiKeyStore } from '@/lib/store/api'
+import { useApiKeyStore } from '@/lib/store/api'
 import { type ChangeEvent } from 'react'
 import { successToast } from './Loaders'
 
 const DialogModal = () => {
-	const apiKey = apiKeyStore((state) => state.apiKey)
-	const setApiKey = apiKeyStore((state) => state.setApiKey)
+	const apiKey = useApiKeyStore((state) => state.apiKey)
+	const setApiKey = useApiKeyStore((state) => state.setApiKey)
 
 	const handleChangeApiKey = (event: ChangeEvent<HTMLInputElement>) => {
 		const userInput = event.target.value.trim()

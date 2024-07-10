@@ -12,6 +12,10 @@ export const infoToast = (message: string) => {
 	toast.info(message)
 }
 
+export const warningToast = (message: string) => {
+	toast.warning(message)
+}
+
 const Toast = () => {
 	return <Toaster position='bottom-left' richColors expand />
 }

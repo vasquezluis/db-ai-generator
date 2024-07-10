@@ -5,7 +5,7 @@ const initialState = {
 	apiKey: '',
 }
 
-export const apiKeyStore = create<IApiKeyStore>((set) => ({
+export const useApiKeyStore = create<IApiKeyStore>((set) => ({
 	...initialState,
 	setApiKey(key) {
 		set(() => ({

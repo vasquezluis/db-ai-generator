@@ -13,7 +13,7 @@ export const infoToast = (message: string) => {
 }
 
 const Toast = () => {
-	return <Toaster position='bottom-right' richColors expand />
+	return <Toaster position='bottom-left' richColors expand />
 }
 
 export default Toast

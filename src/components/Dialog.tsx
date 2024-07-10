@@ -14,7 +14,25 @@ import { Button } from '@/components/ui/button'
 import KeySVG from './icons/Key'
 import CopySVG from './icons/CopySVG'
 
+import { apiKeyStore } from '@/lib/store/api'
+import { type ChangeEvent } from 'react'
+import { successToast } from './Loaders'
+
 const DialogModal = () => {
+	const apiKey = apiKeyStore((state) => state.apiKey)
+	const setApiKey = apiKeyStore((state) => state.setApiKey)
+
+	const handleChangeApiKey = (event: ChangeEvent<HTMLInputElement>) => {
+		const userInput = event.target.value.trim()
+		setApiKey(userInput)
+	}
+
+	const handleOnBlur = () => {
+		if (apiKey.trim() !== '') {
+			successToast('Api Key guardada!')
+		}
+	}
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -49,6 +67,10 @@ const DialogModal = () => {
 						<Input
 							id='link'
 							className='text-white'
+							value={apiKey}
+							type='password'
+							onBlur={handleOnBlur}
+							onChange={handleChangeApiKey}
 							placeholder='sadfassssssssssssssssssssssssssssssssssssssssss'
 						/>
 					</div>

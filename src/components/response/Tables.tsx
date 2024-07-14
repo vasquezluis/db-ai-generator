@@ -2,6 +2,13 @@
 
 import { useDataStore } from '@/lib/store/data'
 import LoadingSkeleton from '../Skeleton'
+import { Prism as PrismSyntaxHighlighter } from 'react-syntax-highlighter'
+
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+// import {
+// 	monokai,
+// } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+import { sqlCode } from '@/lib/constants'
 
 const Tables = () => {
 	const data = useDataStore((state) => state.data)
@@ -27,7 +34,17 @@ const Tables = () => {
 	}
 
 	if (data !== undefined && data.length !== 0) {
-		return <div className='text-white'>{JSON.stringify(data)}</div>
+		return (
+			<div className='flex items-center justify-center gap-x-3'>
+				<PrismSyntaxHighlighter language='sql' style={dracula} showLineNumbers>
+					{sqlCode}
+				</PrismSyntaxHighlighter>
+
+				{/* <SyntaxHighlighter language='sql' style={monokai} showLineNumbers>
+					{sqlCode}
+				</SyntaxHighlighter> */}
+			</div>
+		)
 	}
 }
 

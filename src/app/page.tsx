@@ -1,5 +1,6 @@
 import UserInput from '@/components/UserInput'
 import Tables from '@/components/response/Tables'
+import Diagram from '@/components/response/Diagram'
 
 export default function Home() {
 	return (
@@ -7,7 +8,10 @@ export default function Home() {
 			<section className='flex w-full flex-col items-center justify-center gap-y-10'>
 				<UserInput />
 
-				<Tables />
+				<div className='flex items-center justify-center gap-x-3'>
+					<Tables />
+					<Diagram />
+				</div>
 			</section>
 		</main>
 	)

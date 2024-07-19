@@ -1,50 +1,18 @@
 'use client'
 
+import { type FC } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { createResponse } from '@/lib/actions'
 import HoverCardInfo from './HoverCard'
-import { useDataStore } from '@/lib/store/data'
-import { useApiKeyStore } from '@/lib/store/api'
-import { errorToast, warningToast } from './Loaders'
 import { Form, Formik } from 'formik'
-import { type SubmitProps } from '@/lib/types'
 
 const initialValues = { userInput: '' }
 
-const UserInput = () => {
-	const setData = useDataStore((state) => state.setData)
-	const setIsLoading = useDataStore((state) => state.setIsLoading)
-	const setError = useDataStore((state) => state.setError)
-	const apiKey = useApiKeyStore((state) => state.apiKey)
+interface Props {
+	onSubmit: any
+}
 
-	const onSubmit: SubmitProps = async (values, actions) => {
-		if (apiKey !== '') {
-			if (values.userInput.trim() === '') {
-				warningToast('Por favor escribe tu prompt')
-			} else {
-				try {
-					setIsLoading(true)
-					const response = await createResponse(values.userInput)
-
-					if (response !== undefined) {
-						setData(response)
-						console.log('response: ', response)
-						actions.resetForm()
-						setError(null)
-						setIsLoading(false)
-					}
-				} catch (error) {
-					setError('Hay un error')
-					errorToast('Ha ocurrido un error')
-					setIsLoading(false)
-				}
-			}
-		} else {
-			errorToast('OpenAI Api Key no asignada')
-		}
-	}
-
+const UserInput: FC<Props> = ({ onSubmit }) => {
 	return (
 		<section className='flex w-full flex-col items-center justify-center gap-y-5'>
 			<Formik initialValues={initialValues} onSubmit={onSubmit}>

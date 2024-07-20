@@ -20,7 +20,7 @@ export const generateTableResponse = async ({
 			model: aiConfig('gpt-3.5-turbo'),
 			prompt: `Genera una estructura de tablas MySQL basadas en la siguiente idea de proyecto: ${context}`,
 			system:
-				'Generas estructuras MySQL que ayuden al usuario con su idea de proyecto',
+				'Generas estructuras MySQL que ayuden al usuario con su idea de proyecto el código generado debe cumplir con la estructura para ser usado junto a react-markdown y react-syntax-highlighter, incluye comentarios si es necesario.',
 			schema: tableSchema,
 		})
 

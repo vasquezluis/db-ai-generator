@@ -7,6 +7,7 @@ import { useApiKeyStore } from '@/lib/store/api'
 import { errorToast, warningToast } from '@/components/Loaders'
 import { type SubmitProps } from '@/lib/types'
 import { generateTableResponse } from '@/lib/actions'
+import { useDataStore } from '@/lib/store/data'
 import Tables from '@/components/response/Tables'
 
 export const dynamic = 'force-dynamic'
@@ -15,6 +16,8 @@ export const maxDuration = 30
 export default function Home() {
 	const [tableGeneration, setTableGeneration] = useState<string>('')
 	const apiKey = useApiKeyStore((state) => state.apiKey)
+	const setIsLoading = useDataStore((state) => state.setIsLoading)
+	const setError = useDataStore((state) => state.setError)
 
 	const onSubmit: SubmitProps = async (values, actions) => {
 		if (apiKey !== '') {
@@ -22,21 +25,25 @@ export default function Home() {
 				warningToast('Por favor escribe tu prompt')
 			} else {
 				try {
+					setIsLoading(true)
 					const { object } = await generateTableResponse({
 						context: values.userInput,
 						key: apiKey,
 					})
 
-					for await (const partialObject of readStreamableValue(object)) {
-						if (partialObject !== undefined) {
-							setTableGeneration(
-								JSON.stringify(partialObject.table?.script, null, 2)
-							)
+					if (object !== undefined) {
+						setIsLoading(false)
+						for await (const partialObject of readStreamableValue(object)) {
+							if (partialObject !== undefined) {
+								setTableGeneration(partialObject.table?.script ?? '')
+							}
 						}
 					}
+
+					actions.resetForm()
 				} catch (error) {
-					console.log('error: ', error)
-					errorToast('Ha ocurrido un error')
+					setError('Ha ocurrido un error, vuelve a intentarlo.')
+					errorToast('Ha ocurrido un error, vuelve a intentarlo.')
 				}
 			}
 		} else {

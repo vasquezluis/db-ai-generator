@@ -4,7 +4,7 @@ import { type IDataStore } from '../types'
 const initialState = {
 	data: [],
 	isLoading: false,
-	error: null,
+	error: undefined,
 }
 
 export const useDataStore = create<IDataStore>((set) => ({

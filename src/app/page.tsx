@@ -9,14 +9,16 @@ import { type SubmitProps } from '@/lib/types'
 import { generateTableResponse } from '@/lib/actions'
 import { useDataStore } from '@/lib/store/data'
 import Tables from '@/components/response/Tables'
+import Diagram from '@/components/response/Diagram'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
 export default function Home() {
-	const [tableGeneration, setTableGeneration] = useState<string>('')
+	const [scriptGeneration, setScriptGeneration] = useState<string>('')
+	const [mermaidGeneration, setMermaidGeneration] = useState<string>('')
 	const apiKey = useApiKeyStore((state) => state.apiKey)
-	const setIsLoading = useDataStore((state) => state.setIsLoading)
+	// const setIsLoading = useDataStore((state) => state.setIsLoading)
 	const setError = useDataStore((state) => state.setError)
 
 	const onSubmit: SubmitProps = async (values, actions) => {
@@ -25,17 +27,16 @@ export default function Home() {
 				warningToast('Por favor escribe tu prompt')
 			} else {
 				try {
-					setIsLoading(true)
 					const { object } = await generateTableResponse({
 						context: values.userInput,
 						key: apiKey,
 					})
 
 					if (object !== undefined) {
-						setIsLoading(false)
 						for await (const partialObject of readStreamableValue(object)) {
 							if (partialObject !== undefined) {
-								setTableGeneration(partialObject.table?.script ?? '')
+								setScriptGeneration(partialObject.table?.script ?? '')
+								setMermaidGeneration(partialObject.table?.mermaid ?? '')
 							}
 						}
 					}
@@ -57,7 +58,8 @@ export default function Home() {
 				<UserInput onSubmit={onSubmit} />
 
 				<div className='flex items-center justify-center gap-x-3'>
-					<Tables dataStream={tableGeneration} />
+					<Tables dataStream={scriptGeneration} />
+					<Diagram diagramScript={mermaidGeneration} />
 				</div>
 			</section>
 		</main>

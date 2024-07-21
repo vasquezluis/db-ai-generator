@@ -23,3 +23,35 @@ CREATE TABLE Orders (
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
 `
+
+export const diagramDefinition2 = `
+    erDiagram
+        PRODUCT_TYPES {
+            id INT PRIMARY KEY       
+            name VARCHAR(50) NOT NULL
+        }
+        `
+
+export const diagramDefinition = `
+    erDiagram
+      USERS {
+        int user_id PK "Primary Key"
+        string username
+        string email
+        timestamp created_at
+      }
+      PRODUCTS {
+        int product_id PK "Primary Key"
+        string product_name
+        decimal price
+        int stock
+      }
+      ORDERS {
+        int order_id PK "Primary Key"
+        int user_id FK "Foreign Key"
+        timestamp order_date
+        decimal total_amount
+      }
+      USERS ||--o{ ORDERS : "places"
+      PRODUCTS ||--o{ ORDERS : "contains"
+  `

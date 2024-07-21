@@ -12,6 +12,7 @@ export const generateTableResponse = async ({
 	key,
 }: generateProps) => {
 	'use server'
+
 	const tableStream = createStreamableValue<PartialTable>()
 	const aiConfig = createOpenAI({ apiKey: key })
 
@@ -22,12 +23,18 @@ export const generateTableResponse = async ({
 			system:
 				'Generas estructuras MySQL que ayuden al usuario con su idea de proyecto el código generado debe cumplir con la estructura para ser usado junto a react-markdown y react-syntax-highlighter, incluye comentarios si es necesario.',
 			schema: tableSchema,
+			onFinish: ({ usage, object }) => {
+				console.log('usage: ', usage)
+				console.log('mermaid: ', object?.table.mermaid)
+			},
 		})
 
+		// update tableStream following schema structure
 		for await (const partialObject of partialObjectStream) {
 			tableStream.update({
 				table: {
 					script: partialObject.table?.script,
+					mermaid: partialObject.table?.mermaid,
 				},
 			})
 		}

@@ -25,6 +25,8 @@
 		"clsx": "2.1.1",
 		"formik": "2.4.6",
 		"lucide-react": "0.407.0",
+		"markmap-lib": "0.17.0",
+		"markmap-view": "0.17.0",
 		"mermaid": "10.9.1",
 		"next": "14.2.4",
 		"react": "18",

@@ -9,14 +9,15 @@ import { type SubmitProps } from '@/lib/types'
 import { generateTableResponse } from '@/lib/actions'
 import { useDataStore } from '@/lib/store/data'
 import Tables from '@/components/response/Tables'
-import Diagram from '@/components/response/Diagram'
+// import Diagram from '@/components/response/Diagram'
+import MarkmapView from '@/components/response/Markmap'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
 export default function Home() {
 	const [scriptGeneration, setScriptGeneration] = useState<string>('')
-	const [mermaidGeneration, setMermaidGeneration] = useState<string>('')
+	// const [mermaidGeneration, setMermaidGeneration] = useState<string>('')
 	const apiKey = useApiKeyStore((state) => state.apiKey)
 	// const setIsLoading = useDataStore((state) => state.setIsLoading)
 	const setError = useDataStore((state) => state.setError)
@@ -36,7 +37,7 @@ export default function Home() {
 						for await (const partialObject of readStreamableValue(object)) {
 							if (partialObject !== undefined) {
 								setScriptGeneration(partialObject.table?.script ?? '')
-								setMermaidGeneration(partialObject.table?.mermaid ?? '')
+								// setMermaidGeneration(partialObject.table?.mermaid ?? '')
 							}
 						}
 					}
@@ -59,7 +60,11 @@ export default function Home() {
 
 				<div className='flex items-center justify-center gap-x-3'>
 					<Tables dataStream={scriptGeneration} />
-					<Diagram diagramScript={mermaidGeneration} />
+					{/* <Diagram diagramScript={mermaidGeneration} /> */}
+					<MarkmapView
+						markdown={scriptGeneration}
+						setScript={setScriptGeneration}
+					/>
 				</div>
 			</section>
 		</main>

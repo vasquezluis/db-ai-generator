@@ -4,20 +4,9 @@ import { useEffect, useRef } from 'react'
 import { Markmap } from 'markmap-view'
 import { Transformer } from 'markmap-lib'
 
-const MarkmapView = ({
-	markdown,
-	setScript,
-}: {
-	markdown: string
-	setScript: (data: string) => void
-}) => {
+const MarkmapView = ({ markdown }: { markdown: string }) => {
 	const svgRef = useRef<SVGSVGElement | null>(null)
 	const transformer = new Transformer()
-
-	const code = `
-# SQL Schema Overview
-## Tables
-`
 
 	useEffect(() => {
 		if (svgRef.current !== null) {
@@ -29,14 +18,6 @@ const MarkmapView = ({
 			void markmap.fit()
 		}
 	}, [markdown])
-
-	useEffect(() => {
-		setScript(code)
-	}, [])
-
-	if (markdown === '') {
-		return
-	}
 
 	return (
 		<svg

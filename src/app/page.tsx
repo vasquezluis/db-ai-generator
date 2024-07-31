@@ -16,7 +16,8 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
 export default function Home() {
-	const [scriptGeneration, setScriptGeneration] = useState<string>('')
+	const [sqlScript, setSqlScript] = useState<string>('')
+	const [markdownScript, setMarkdownScript] = useState<string>('')
 	// const [mermaidGeneration, setMermaidGeneration] = useState<string>('')
 	const apiKey = useApiKeyStore((state) => state.apiKey)
 	// const setIsLoading = useDataStore((state) => state.setIsLoading)
@@ -36,7 +37,8 @@ export default function Home() {
 					if (object !== undefined) {
 						for await (const partialObject of readStreamableValue(object)) {
 							if (partialObject !== undefined) {
-								setScriptGeneration(partialObject.table?.script ?? '')
+								setSqlScript(partialObject.table?.sql ?? '')
+								setMarkdownScript(partialObject.table?.markdown ?? '')
 								// setMermaidGeneration(partialObject.table?.mermaid ?? '')
 							}
 						}
@@ -59,12 +61,9 @@ export default function Home() {
 				<UserInput onSubmit={onSubmit} />
 
 				<div className='flex items-center justify-center gap-x-3'>
-					<Tables dataStream={scriptGeneration} />
+					<Tables dataStream={sqlScript} />
 					{/* <Diagram diagramScript={mermaidGeneration} /> */}
-					<MarkmapView
-						markdown={scriptGeneration}
-						setScript={setScriptGeneration}
-					/>
+					<MarkmapView markdown={markdownScript} />
 				</div>
 			</section>
 		</main>

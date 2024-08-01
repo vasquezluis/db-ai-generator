@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  hackathon:
+    build: ./
+    container_name: structura
+    ports:
+      - 3000:3000

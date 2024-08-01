@@ -60,7 +60,7 @@ export default function Home() {
 			<section className='flex w-full flex-col items-center justify-center gap-y-10'>
 				<UserInput onSubmit={onSubmit} />
 
-				<div className='flex items-center justify-center gap-x-3'>
+				<div className='flex w-3/4 items-center justify-center gap-x-3'>
 					<Tables dataStream={sqlScript} />
 					{/* <Diagram diagramScript={mermaidGeneration} /> */}
 					<MarkmapView markdown={markdownScript} />

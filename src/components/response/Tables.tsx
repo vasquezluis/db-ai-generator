@@ -33,10 +33,8 @@ const Tables: FC<TableProps> = ({ dataStream }) => {
 
 	if (dataStream !== '') {
 		return (
-			<div className='mt-4 flex w-full max-w-4xl items-center justify-center gap-x-3 rounded-md'>
-				<div className='mt-4 flex w-full max-w-4xl items-center justify-center gap-x-3 rounded-md'>
-					<Markdown markdown={dataStream} />
-				</div>
+			<div className='mt-4 flex flex-1 w-full items-center justify-center rounded-md'>
+				<Markdown markdown={dataStream} />
 			</div>
 		)
 	}

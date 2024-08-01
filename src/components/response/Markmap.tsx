@@ -19,15 +19,22 @@ const MarkmapView = ({ markdown }: { markdown: string }) => {
 		}
 	}, [markdown])
 
+	if (markdown === '') {
+		return
+	}
+
 	return (
-		<svg
-			ref={svgRef}
-			style={{
-				width: '700px',
-				height: '700px',
-				color: 'white',
-			}}
-		/>
+		<div className='flex flex-1 justify-center items-center rounded-md border border-neutral-500'>
+			<svg
+				ref={svgRef}
+				style={{
+					width: '100%',
+					minHeight: '400px',
+					maxHeight: '100%',
+					color: 'white',
+				}}
+			/>
+		</div>
 	)
 }
 

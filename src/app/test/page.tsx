@@ -27,7 +27,7 @@ const page = () => {
 				/>
 			</div>
 			<div className='border border-pink-700'>
-				<MarkmapView markdown={markdown} setScript={setMarkdown} />
+				<MarkmapView markdown={markdown} />
 			</div>
 		</main>
 	)

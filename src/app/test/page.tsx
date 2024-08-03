@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 
 import MarkmapView from '@/components/response/Markmap'
+import Tables from '@/components/response/Tables'
+import Flow from '@/components/response/Flow'
 
 const code = `
 # SQL Schema Overview
@@ -17,17 +19,29 @@ const page = () => {
 	}, [])
 
 	return (
-		<main className='flex h-screen w-full items-center justify-center'>
-			<div>
+		<main className='flex flex-col h-screen w-full items-center justify-center'>
+			{/* <div>
 				<textarea
 					value={markdown}
 					onChange={(e) => {
 						setMarkdown(e.target.value)
 					}}
 				/>
+			</div> */}
+			{/* <button
+				onClick={() => {
+					setmermaidCode(mermaid2)
+				}}
+			>
+				Change mermaid
+			</button> */}
+			<div>
+				
 			</div>
-			<div className='border border-pink-700'>
+			<div className='flex h-1/2 w-1/2 items-center justify-center'>
+				<Tables dataStream={markdown} />
 				<MarkmapView markdown={markdown} />
+				<Flow />
 			</div>
 		</main>
 	)

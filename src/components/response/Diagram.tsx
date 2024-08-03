@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import mermaid from 'mermaid'
 
 const Diagram = ({ diagramScript }: { diagramScript: string }) => {
 	const [isClient, setIsClient] = useState(false)
+	const diagramRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		setIsClient(true)
@@ -13,9 +14,20 @@ const Diagram = ({ diagramScript }: { diagramScript: string }) => {
 	useEffect(() => {
 		if (isClient) {
 			mermaid.initialize({ startOnLoad: true, theme: 'dark' })
-			mermaid.contentLoaded()
 		}
 	}, [isClient])
+
+	useEffect(() => {
+		if (isClient && diagramScript) {
+			const renderDiagram = async () => {
+				if (diagramRef.current) {
+					diagramRef.current.innerHTML = ''
+					const { svg } = await mermaid.render('mermaid-diagram', diagramScript)
+					diagramRef.current.innerHTML = svg
+				}
+			}
+		}
+	}, [isClient, diagramScript])
 
 	if (!isClient) {
 		return null
@@ -26,9 +38,10 @@ const Diagram = ({ diagramScript }: { diagramScript: string }) => {
 	}
 
 	return (
-		<section className='mermaid flex items-center justify-center text-3xl'>
-			{diagramScript}
-		</section>
+		<section
+			ref={diagramRef}
+			className='mermaid flex items-center justify-center text-3xl'
+		/>
 	)
 }
 

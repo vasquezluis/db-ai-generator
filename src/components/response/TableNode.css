@@ -1,0 +1,31 @@
+/* TableNode.css */
+.table-node {
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 10px;
+	background-color: white;
+	box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+	background-color: #f0f0f0;
+	border-bottom: 1px solid #ddd;
+	padding: 5px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.table-columns {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.table-columns li {
+	padding: 5px;
+	border-bottom: 1px solid #ddd;
+}
+
+.table-columns li:last-child {
+	border-bottom: none;
+}

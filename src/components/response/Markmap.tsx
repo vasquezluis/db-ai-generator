@@ -29,7 +29,7 @@ const MarkmapView = ({ markdown }: { markdown: string }) => {
 				ref={svgRef}
 				style={{
 					width: '100%',
-					minHeight: '400px',
+					height: '500px',
 					maxHeight: '100%',
 					color: 'white',
 				}}

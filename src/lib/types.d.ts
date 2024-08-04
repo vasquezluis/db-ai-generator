@@ -32,3 +32,12 @@ type SubmitProps = (
 	values: Values,
 	actions: FormikHelpers<Values>
 ) => Promise<void>
+
+export interface generateProps {
+	context: string
+	key: string
+}
+
+interface TableProps {
+	dataStream: string
+}

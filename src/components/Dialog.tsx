@@ -15,10 +15,11 @@ import KeySVG from './icons/Key'
 import CopySVG from './icons/CopySVG'
 
 import { useApiKeyStore } from '@/lib/store/api'
-import { type ChangeEvent } from 'react'
+import { type ChangeEvent, useState, useEffect } from 'react'
 import { successToast } from './Loaders'
 
 const DialogModal = () => {
+	const [open, setOpen] = useState(false)
 	const apiKey = useApiKeyStore((state) => state.apiKey)
 	const setApiKey = useApiKeyStore((state) => state.setApiKey)
 
@@ -27,14 +28,27 @@ const DialogModal = () => {
 		setApiKey(userInput)
 	}
 
-	const handleOnBlur = () => {
-		if (apiKey.trim() !== '') {
-			successToast('Api Key guardada!')
-		}
+	const handlePasteClipBoard = () => {
+		window.navigator.clipboard
+			.readText()
+			.then((text) => {
+				setApiKey(text.trim())
+			})
+			.catch((e) => {
+				console.log('error: ', e)
+			})
 	}
 
+	useEffect(() => {
+		if (!open) {
+			if (apiKey.trim() !== '') {
+				successToast('Api Key guardada!')
+			}
+		}
+	}, [open])
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className='flex items-center justify-center gap-x-2 text-white'>
 					API Key
@@ -50,7 +64,7 @@ const DialogModal = () => {
 					<DialogDescription>
 						Mas información:{' '}
 						<a
-							href='https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key'
+							href='https://platform.openai.com/api-keys'
 							target='_blank'
 							rel='noreferrer noopener'
 							className='font-bold'
@@ -69,7 +83,6 @@ const DialogModal = () => {
 							className='text-white'
 							value={apiKey}
 							type='password'
-							onBlur={handleOnBlur}
 							onChange={handleChangeApiKey}
 							placeholder='sadfassssssssssssssssssssssssssssssssssssssssss'
 						/>
@@ -77,8 +90,9 @@ const DialogModal = () => {
 					<Button
 						type='button'
 						size='sm'
-						variant='link'
+						variant='default'
 						className='border border-neutral-700'
+						onClick={handlePasteClipBoard}
 						title='Pegar api key'
 					>
 						<CopySVG />

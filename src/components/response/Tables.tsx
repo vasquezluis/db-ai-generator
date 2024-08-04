@@ -1,10 +1,15 @@
 'use client'
 
+import { type FC } from 'react'
+import { type TableProps } from '@/lib/types'
 import { useDataStore } from '@/lib/store/data'
 import LoadingSkeleton from '../Skeleton'
+import Syntax from './Syntax'
 
-const Tables = () => {
-	const data = useDataStore((state) => state.data)
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
+const Tables: FC<TableProps> = ({ dataStream }) => {
 	const isLoading = useDataStore((state) => state.isLoading)
 	const error = useDataStore((state) => state.error)
 
@@ -17,7 +22,7 @@ const Tables = () => {
 		)
 	}
 
-	if (error !== null) {
+	if (error !== undefined) {
 		return (
 			<div className='flex flex-col items-center justify-center space-y-3 text-red-400'>
 				<span>Error en la petición! </span>
@@ -26,9 +31,15 @@ const Tables = () => {
 		)
 	}
 
-	if (data !== undefined && data.length !== 0) {
-		return <div className='text-white'>{JSON.stringify(data)}</div>
+	if (dataStream !== '') {
+		return (
+			<div className='mt-4 flex w-full flex-1 items-center justify-center rounded-md'>
+				<Syntax script={dataStream} />
+			</div>
+		)
 	}
+
+	return null
 }
 
 export default Tables

@@ -31,15 +31,6 @@ Structura es una herramienta innovadora diseñada para ayudar a los desarrollado
    npm install
    ```
 
-3. Configura las variables de entorno:
-
-   - Crea un archivo .env.local en el directorio raíz.
-   - Añade tu clave API de OpenAI en el archivo .env.local:
-
-   ```javascript
-   OPENAI_API_KEY = tu_openai_api_key
-   ```
-
 ### Ejecuta el proyecto
 
 1. Inicia el servidor de desarrollo:

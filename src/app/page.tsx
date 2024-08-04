@@ -1,113 +1,113 @@
-import Image from 'next/image'
+'use client'
+
+import { useState } from 'react'
+import UserInput from '@/components/UserInput'
+import { readStreamableValue } from 'ai/rsc'
+import { useApiKeyStore } from '@/lib/store/api'
+import { errorToast, warningToast } from '@/components/Loaders'
+import { type SubmitProps } from '@/lib/types'
+import { generateTableResponse } from '@/lib/actions'
+import { useDataStore } from '@/lib/store/data'
+
+import Tables from '@/components/response/Tables'
+import MarkmapView from '@/components/response/Markmap'
+import Markdown from '@/components/response/Markdown'
+
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
+const tabList = {
+	TAB1: 'script',
+	TAB2: 'map',
+}
 
 export default function Home() {
+	const [sqlScript, setSqlScript] = useState<string>('')
+	const [mapScript, setMapScript] = useState<string>('')
+	const [descriptionScript, setDescriptionScript] = useState<string>('')
+	const [tabSelected, setTabSelected] = useState(tabList.TAB1)
+
+	const apiKey = useApiKeyStore((state) => state.apiKey)
+	// const setIsLoading = useDataStore((state) => state.setIsLoading)
+	const setError = useDataStore((state) => state.setError)
+
+	const onSubmit: SubmitProps = async (values, actions) => {
+		if (apiKey !== '') {
+			if (values.userInput.trim() === '') {
+				warningToast('Por favor escribe tu prompt')
+			} else {
+				try {
+					const { object } = await generateTableResponse({
+						context: values.userInput,
+						key: apiKey,
+					})
+
+					if (object !== undefined) {
+						for await (const partialObject of readStreamableValue(object)) {
+							if (partialObject !== undefined) {
+								setDescriptionScript(partialObject.table?.description ?? '')
+								setSqlScript(partialObject.table?.sql ?? '')
+								setMapScript(partialObject.table?.map ?? '')
+							}
+						}
+					}
+
+					actions.resetForm()
+				} catch (error) {
+					setError('Ha ocurrido un error, vuelve a intentarlo.')
+					errorToast('Ha ocurrido un error, vuelve a intentarlo.')
+				}
+			}
+		} else {
+			errorToast('OpenAI Api Key no asignada')
+		}
+	}
+
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-between p-24'>
-			<div className='z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex'>
-				<p className='fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:dark:bg-zinc-800/30'>
-					Get started by editing&nbsp;
-					<code className='font-mono font-bold'>src/app/page.tsx</code>
-				</p>
-				<div className='fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white lg:static lg:size-auto lg:bg-none dark:from-black dark:via-black'>
-					<a
-						className='pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0'
-						href='https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-						target='_blank'
-						rel='noopener noreferrer'
-					>
-						By{' '}
-						<Image
-							src='/vercel.svg'
-							alt='Vercel Logo'
-							className='dark:invert'
-							width={100}
-							height={24}
-							priority
-						/>
-					</a>
+		<main className='flex min-h-screen w-full flex-col items-center justify-start pt-10'>
+			<section className='flex w-full flex-col items-center justify-center gap-y-10'>
+				<UserInput onSubmit={onSubmit} />
+
+				<div className='flex w-3/4 items-start justify-center gap-x-1'>
+					<div className='flex flex-1 flex-col'>
+						{descriptionScript !== '' && (
+							<div className='w-full rounded-md bg-neutral-900 py-3 text-center text-white'>
+								DESCRIPCIÓN
+							</div>
+						)}
+						<Markdown markdown={descriptionScript} />
+					</div>
+					<div className='flex flex-1 flex-col'>
+						{sqlScript !== '' && mapScript !== '' && (
+							<div className='flex w-full'>
+								<button
+									className='flex w-full flex-1 items-center justify-center rounded-bl-md rounded-tl-md border-neutral-500 bg-neutral-800 py-3 text-white hover:border hover:bg-neutral-700'
+									onClick={() => {
+										setTabSelected(tabList.TAB1)
+									}}
+								>
+									CÓDIGO
+								</button>
+								<button
+									className='flex w-full flex-1 items-center justify-center rounded-br-md rounded-tr-md border-neutral-500 bg-neutral-700 py-3 text-white hover:border hover:bg-neutral-600'
+									onClick={() => {
+										setTabSelected(tabList.TAB2)
+									}}
+								>
+									MAPA
+								</button>
+							</div>
+						)}
+						<div>
+							{tabSelected === tabList.TAB1 ? (
+								<Tables dataStream={sqlScript} />
+							) : (
+								<MarkmapView markdown={mapScript} />
+							)}
+						</div>
+					</div>
 				</div>
-			</div>
-
-			<div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40">
-				<Image
-					className='relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert'
-					src='/next.svg'
-					alt='Next.js Logo'
-					width={180}
-					height={37}
-					priority
-				/>
-			</div>
-
-			<div className='mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left'>
-				<a
-					href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-					className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					<h2 className='mb-3 text-2xl font-semibold'>
-						Docs{' '}
-						<span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-							-&gt;
-						</span>
-					</h2>
-					<p className='m-0 max-w-[30ch] text-sm opacity-50'>
-						Find in-depth information about Next.js features and API.
-					</p>
-				</a>
-
-				<a
-					href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-					className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					<h2 className='mb-3 text-2xl font-semibold'>
-						Learn{' '}
-						<span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-							-&gt;
-						</span>
-					</h2>
-					<p className='m-0 max-w-[30ch] text-sm opacity-50'>
-						Learn about Next.js in an interactive course with&nbsp;quizzes!
-					</p>
-				</a>
-
-				<a
-					href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-					className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					<h2 className='mb-3 text-2xl font-semibold'>
-						Templates{' '}
-						<span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-							-&gt;
-						</span>
-					</h2>
-					<p className='m-0 max-w-[30ch] text-sm opacity-50'>
-						Explore starter templates for Next.js.
-					</p>
-				</a>
-
-				<a
-					href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app'
-					className='group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'
-					target='_blank'
-					rel='noopener noreferrer'
-				>
-					<h2 className='mb-3 text-2xl font-semibold'>
-						Deploy{' '}
-						<span className='inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none'>
-							-&gt;
-						</span>
-					</h2>
-					<p className='m-0 max-w-[30ch] text-balance text-sm opacity-50'>
-						Instantly deploy your Next.js site to a shareable URL with Vercel.
-					</p>
-				</a>
-			</div>
+			</section>
 		</main>
 	)
 }

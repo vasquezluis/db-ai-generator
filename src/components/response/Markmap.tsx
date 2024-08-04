@@ -24,7 +24,7 @@ const MarkmapView = ({ markdown }: { markdown: string }) => {
 	}
 
 	return (
-		<div className='flex flex-1 justify-center items-center rounded-md border border-neutral-500'>
+		<div className='mt-4 flex flex-1 items-center justify-center rounded-md border border-neutral-500'>
 			<svg
 				ref={svgRef}
 				style={{

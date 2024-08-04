@@ -17,17 +17,17 @@ const Diagram = ({ diagramScript }: { diagramScript: string }) => {
 		}
 	}, [isClient])
 
-	useEffect(() => {
-		if (isClient && diagramScript) {
-			const renderDiagram = async () => {
-				if (diagramRef.current) {
-					diagramRef.current.innerHTML = ''
-					const { svg } = await mermaid.render('mermaid-diagram', diagramScript)
-					diagramRef.current.innerHTML = svg
-				}
-			}
-		}
-	}, [isClient, diagramScript])
+	// useEffect(() => {
+	// 	if (isClient && diagramScript) {
+	// 		const renderDiagram = async () => {
+	// 			if (diagramRef.current) {
+	// 				diagramRef.current.innerHTML = ''
+	// 				const { svg } = await mermaid.render('mermaid-diagram', diagramScript)
+	// 				diagramRef.current.innerHTML = svg
+	// 			}
+	// 		}
+	// 	}
+	// }, [isClient, diagramScript])
 
 	if (!isClient) {
 		return null

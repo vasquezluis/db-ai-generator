@@ -4,7 +4,7 @@ import { type FC } from 'react'
 import { type TableProps } from '@/lib/types'
 import { useDataStore } from '@/lib/store/data'
 import LoadingSkeleton from '../Skeleton'
-import Markdown from './Markdown'
+import Syntax from './Syntax'
 
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
@@ -33,8 +33,8 @@ const Tables: FC<TableProps> = ({ dataStream }) => {
 
 	if (dataStream !== '') {
 		return (
-			<div className='mt-4 flex flex-1 w-full items-center justify-center rounded-md'>
-				<Markdown markdown={dataStream} />
+			<div className='mt-4 flex w-full flex-1 items-center justify-center rounded-md'>
+				<Syntax script={dataStream} />
 			</div>
 		)
 	}

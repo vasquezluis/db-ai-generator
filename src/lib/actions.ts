@@ -25,7 +25,6 @@ export const generateTableResponse = async ({
 			schema: tableSchema,
 			onFinish: ({ usage, object }) => {
 				console.log('usage: ', usage)
-				console.log('mermaid: ', object?.table.markdown)
 			},
 		})
 
@@ -33,9 +32,9 @@ export const generateTableResponse = async ({
 		for await (const partialObject of partialObjectStream) {
 			tableStream.update({
 				table: {
+					description: partialObject.table?.description,
 					sql: partialObject.table?.sql,
-					markdown: partialObject.table?.markdown,
-					mermaid: partialObject.table?.mermaid,
+					map: partialObject.table?.map,
 				},
 			})
 		}

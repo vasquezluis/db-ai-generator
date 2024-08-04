@@ -21,9 +21,7 @@ export default function RootLayout({
 	return (
 		<html lang='es'>
 			<body
-				className={
-					(cn('min-h-screen bg-primary font-sans antialiased'), inter.className)
-				}
+				className={(cn('min-h-screen font-sans antialiased'), inter.className)}
 			>
 				<NavBar />
 				{children}

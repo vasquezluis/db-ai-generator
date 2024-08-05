@@ -6,7 +6,7 @@ import { data } from '@/lib/constants'
 const page = () => {
 	return (
 		<main className='flex min-h-screen w-full flex-col items-center justify-start gap-y-7'>
-			<div className='flex min-h-screen w-full flex-col items-center justify-center gap-y-5 md:w-10/12'>
+			<div className='flex min-h-screen w-full flex-col items-center justify-start gap-y-5 pt-10 md:w-10/12'>
 				<div className='flex h-full w-full flex-col items-center justify-center gap-y-3'>
 					<Hero />
 					<Code />

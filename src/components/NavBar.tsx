@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import DialogModal from './Dialog'
 import Link from 'next/link'
 
@@ -8,9 +9,15 @@ const NavBar = () => {
 				<div className='mx-auto flex max-w-screen-xl flex-wrap items-center justify-between'>
 					<Link
 						href='/'
-						className='self-center whitespace-nowrap text-xl font-semibold text-white'
+						className='flex gap-x-1 self-center whitespace-nowrap text-xl font-semibold text-white md:gap-x-3'
 					>
-						Structura
+						<Image
+							src='/structura.svg'
+							alt='structura svg'
+							width={32}
+							height={32}
+						/>
+						<span>Structura</span>
 					</Link>
 					<div className='flex items-center lg:order-2'>
 						<DialogModal />

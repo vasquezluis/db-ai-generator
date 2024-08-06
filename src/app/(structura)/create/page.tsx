@@ -68,8 +68,8 @@ export default function Home() {
 			<section className='flex w-full flex-col items-center justify-center gap-y-10'>
 				<UserInput onSubmit={onSubmit} />
 
-				<div className='flex w-3/4 items-start justify-center gap-x-1'>
-					<div className='flex flex-1 flex-col'>
+				<div className='flex w-full flex-col items-start justify-center gap-x-1 md:w-3/4 md:flex-row'>
+					<div className='flex w-full flex-1 flex-col'>
 						{descriptionScript !== '' && (
 							<div className='w-full rounded-md bg-neutral-900 py-3 text-center text-white'>
 								DESCRIPCIÓN
@@ -77,11 +77,11 @@ export default function Home() {
 						)}
 						<Markdown markdown={descriptionScript} />
 					</div>
-					<div className='flex flex-1 flex-col'>
+					<div className='flex w-full flex-1 flex-col'>
 						{sqlScript !== '' && mapScript !== '' && (
 							<div className='flex w-full'>
 								<button
-									className='flex w-full flex-1 items-center justify-center rounded-bl-md rounded-tl-md border-neutral-500 bg-neutral-800 py-3 text-white hover:border hover:bg-neutral-700'
+									className='flex w-full flex-1 items-center justify-center rounded-bl-md rounded-tl-md bg-neutral-800 py-3 text-white hover:bg-neutral-900'
 									onClick={() => {
 										setTabSelected(tabList.TAB1)
 									}}
@@ -89,7 +89,7 @@ export default function Home() {
 									CÓDIGO
 								</button>
 								<button
-									className='flex w-full flex-1 items-center justify-center rounded-br-md rounded-tr-md border-neutral-500 bg-neutral-700 py-3 text-white hover:border hover:bg-neutral-600'
+									className='flex w-full flex-1 items-center justify-center rounded-br-md rounded-tr-md bg-neutral-700 py-3 text-white hover:bg-neutral-800'
 									onClick={() => {
 										setTabSelected(tabList.TAB2)
 									}}

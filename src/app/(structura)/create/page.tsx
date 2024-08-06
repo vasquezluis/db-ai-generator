@@ -28,7 +28,7 @@ export default function Home() {
 	const [tabSelected, setTabSelected] = useState(tabList.TAB1)
 
 	const apiKey = useApiKeyStore((state) => state.apiKey)
-	// const setIsLoading = useDataStore((state) => state.setIsLoading)
+	const error = useDataStore((state) => state.error)
 	const setError = useDataStore((state) => state.setError)
 
 	const onSubmit: SubmitProps = async (values, actions) => {
@@ -37,12 +37,14 @@ export default function Home() {
 				warningToast('Por favor escribe tu prompt')
 			} else {
 				try {
+					setError(undefined)
+
 					const { object } = await generateTableResponse({
 						context: values.userInput,
 						key: apiKey,
 					})
 
-					if (object !== undefined) {
+					if (object !== undefined && typeof object !== 'string') {
 						for await (const partialObject of readStreamableValue(object)) {
 							if (partialObject !== undefined) {
 								setSqlScript(partialObject.table?.sql ?? '')
@@ -53,9 +55,15 @@ export default function Home() {
 					}
 
 					actions.resetForm()
-				} catch (error) {
-					setError('Ha ocurrido un error, vuelve a intentarlo.')
-					errorToast('Ha ocurrido un error, vuelve a intentarlo.')
+				} catch (error: any) {
+					console.error(error)
+					if (error.name === 'AI_APICallError') {
+						errorToast('Api key inválida!')
+						setError('Api key inválida!')
+					} else {
+						errorToast('Error inesperado')
+						setError('Error inesperado, vuelve a intentarlo.')
+					}
 				}
 			}
 		} else {
@@ -68,45 +76,52 @@ export default function Home() {
 			<section className='flex w-full flex-col items-center justify-center gap-y-10'>
 				<UserInput onSubmit={onSubmit} />
 
-				<div className='flex w-full flex-col items-start justify-center gap-x-1 md:w-3/4 md:flex-row'>
-					<div className='flex w-full flex-1 flex-col'>
-						{descriptionScript !== '' && (
-							<div className='w-full rounded-md bg-neutral-900 py-3 text-center text-white'>
-								DESCRIPCIÓN
-							</div>
-						)}
-						<Markdown markdown={descriptionScript} />
+				{error !== undefined ? (
+					<div className='flex flex-col items-center justify-center space-y-3 text-red-400'>
+						<span>Error en la petición! </span>
+						<span>{error}</span>
 					</div>
-					<div className='flex w-full flex-1 flex-col'>
-						{sqlScript !== '' && mapScript !== '' && (
-							<div className='flex w-full'>
-								<button
-									className='flex w-full flex-1 items-center justify-center rounded-bl-md rounded-tl-md bg-neutral-800 py-3 text-white hover:bg-neutral-900'
-									onClick={() => {
-										setTabSelected(tabList.TAB1)
-									}}
-								>
-									CÓDIGO
-								</button>
-								<button
-									className='flex w-full flex-1 items-center justify-center rounded-br-md rounded-tr-md bg-neutral-700 py-3 text-white hover:bg-neutral-800'
-									onClick={() => {
-										setTabSelected(tabList.TAB2)
-									}}
-								>
-									MAPA
-								</button>
-							</div>
-						)}
-						<div>
-							{tabSelected === tabList.TAB1 ? (
-								<Tables dataStream={sqlScript} />
-							) : (
-								<MarkmapView markdown={mapScript} />
+				) : (
+					<div className='flex w-full flex-col items-start justify-center gap-x-1 md:w-3/4 md:flex-row'>
+						<div className='flex w-full flex-1 flex-col'>
+							{descriptionScript !== '' && (
+								<div className='w-full rounded-md bg-neutral-900 py-3 text-center text-white'>
+									DESCRIPCIÓN
+								</div>
 							)}
+							<Markdown markdown={descriptionScript} />
+						</div>
+						<div className='flex w-full flex-1 flex-col'>
+							{sqlScript !== '' && mapScript !== '' && (
+								<div className='flex w-full'>
+									<button
+										className='flex w-full flex-1 items-center justify-center rounded-bl-md rounded-tl-md bg-neutral-800 py-3 text-white hover:bg-neutral-900'
+										onClick={() => {
+											setTabSelected(tabList.TAB1)
+										}}
+									>
+										CÓDIGO
+									</button>
+									<button
+										className='flex w-full flex-1 items-center justify-center rounded-br-md rounded-tr-md bg-neutral-700 py-3 text-white hover:bg-neutral-800'
+										onClick={() => {
+											setTabSelected(tabList.TAB2)
+										}}
+									>
+										MAPA
+									</button>
+								</div>
+							)}
+							<div>
+								{tabSelected === tabList.TAB1 ? (
+									<Tables dataStream={sqlScript} />
+								) : (
+									<MarkmapView markdown={mapScript} />
+								)}
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
 			</section>
 		</main>
 	)

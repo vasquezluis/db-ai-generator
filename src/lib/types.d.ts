@@ -6,11 +6,7 @@ export interface IApiKeyStore {
 }
 
 export interface IDataStore {
-	data: any
-	isLoading: boolean
 	error: any
-	setData: (data: any) => void
-	setIsLoading: (value: boolean) => void
 	setError: (value: any) => void
 }
 

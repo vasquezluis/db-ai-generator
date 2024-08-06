@@ -84,7 +84,7 @@ const DialogModal = () => {
 							value={apiKey}
 							type='password'
 							onChange={handleChangeApiKey}
-							placeholder='sadfassssssssssssssssssssssssssssssssssssssssss'
+							placeholder='sk-proj-************************************************'
 						/>
 					</div>
 					<Button

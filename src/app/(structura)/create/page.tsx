@@ -45,9 +45,9 @@ export default function Home() {
 					if (object !== undefined) {
 						for await (const partialObject of readStreamableValue(object)) {
 							if (partialObject !== undefined) {
-								setDescriptionScript(partialObject.table?.description ?? '')
 								setSqlScript(partialObject.table?.sql ?? '')
 								setMapScript(partialObject.table?.map ?? '')
+								setDescriptionScript(partialObject.table?.description ?? '')
 							}
 						}
 					}

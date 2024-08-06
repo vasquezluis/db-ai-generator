@@ -17,7 +17,7 @@ const UserInput: FC<Props> = ({ onSubmit }) => {
 		<section className='flex w-full flex-col items-center justify-center gap-y-5'>
 			<Formik initialValues={initialValues} onSubmit={onSubmit}>
 				{({ values, isSubmitting, handleChange }) => (
-					<Form className='flex w-1/3 flex-col items-center justify-center gap-y-2'>
+					<Form className='flex w-full flex-col items-center justify-center gap-y-2 p-1 md:w-1/3 md:p-0'>
 						<section className='flex w-full items-center justify-end'>
 							<div className='flex items-center justify-center rounded-full border border-sky-700 bg-neutral-700'>
 								<HoverCardInfo />

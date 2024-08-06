@@ -33,17 +33,6 @@ import { z } from 'zod'
 
 export const tableSchema = z.object({
 	table: z.object({
-		description: z.string().describe(`
-			Explicacion en formato markdown del código SQL generado.
-			La explicación estrictamente debe incluir titulo y contenido de:
-			1. Descripción de cada tabla
-			2. Flujo de datos en las tablas generadas
-			3. Posibles plataformas para alojar la base de datos.
-			4. Información útil acerca del código SQL generado
-			5. Posible partición de tablas si las tablas son grandes
-			6. Consideraciones de seguridad al desplegar/usar la base de datos
-			7. Manejo de datos no estructurados
-			`),
 		sql: z
 			.string()
 			.describe(
@@ -57,7 +46,14 @@ export const tableSchema = z.object({
 			3. Relaciones entre tablas (foreign keys).
 			4. Cualquier indice relevante (indexes) o unique constraints.
 			`),
-
+		description: z.string().describe(`
+			Explicacion en formato markdown de:
+			1. Descripción de cada tabla.
+			2. Flujo de datos en las tablas generadas.
+			3. Información útil acerca del código SQL generado.
+			4. Posible partición de tablas si las tablas son grandes.
+			5. Relacion entre las tablas si las hay.
+			`),
 		// nodesSetup: z
 		// 	.array(nodeSchema)
 		// 	.describe('Configuracion de los nodos para ReactFlow basados en las estructuras SQL generadas.'),

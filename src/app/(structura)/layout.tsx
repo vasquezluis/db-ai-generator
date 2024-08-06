@@ -13,6 +13,8 @@ export const metadata: Metadata = {
 	description: 'Generación de estructura SQL usando lenguaje natural.',
 }
 
+export const fetchCache = 'force-no-store'
+
 export default function RootLayout({
 	children,
 }: Readonly<{

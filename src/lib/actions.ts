@@ -24,7 +24,7 @@ export const generateTableResponse = async ({
 				'Generas estructuras MySQL que ayuden al usuario con su idea de proyecto el código generado debe ser código SQL. Incluye comentarios si es necesario. Crea todo en español.',
 			schema: tableSchema,
 			onFinish: ({ usage, object }) => {
-				console.log('usage: ', usage)
+				console.log('usage: ', usage.totalTokens)
 			},
 		})
 
@@ -32,9 +32,9 @@ export const generateTableResponse = async ({
 		for await (const partialObject of partialObjectStream) {
 			tableStream.update({
 				table: {
-					description: partialObject.table?.description,
 					sql: partialObject.table?.sql,
 					map: partialObject.table?.map,
+					description: partialObject.table?.description,
 				},
 			})
 		}

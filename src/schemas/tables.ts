@@ -35,7 +35,7 @@ export const tableSchema = z.object({
 	table: z.object({
 		description: z.string().describe(`
 			Explicacion en formato markdown del código SQL generado.
-			La explicación debe incluir titulo y contenido de:
+			La explicación estrictamente debe incluir titulo y contenido de:
 			1. Descripción de cada tabla
 			2. Flujo de datos en las tablas generadas
 			3. Posibles plataformas para alojar la base de datos.
